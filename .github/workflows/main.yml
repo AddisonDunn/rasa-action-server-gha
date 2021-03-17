@@ -53,7 +53,7 @@ jobs:
         docker rmi $DOCKER_IMAGE_ID
 
         docker pull ${{ steps.action.outputs.docker_image_full_name }}
-        docker run -p 5055:5055 --name actions -d ${{ steps.action.outputs.docker_image_full_name }}
+        docker run -p 5055:5055 --name actions --cors "*" -d ${{ steps.action.outputs.docker_image_full_name }}
         docker ps -a --filter 'name=actions'
 
         until test -n "$(curl -s http://localhost:5055/health | jq -r  '. | select(.status=="ok") | .status')"; do
